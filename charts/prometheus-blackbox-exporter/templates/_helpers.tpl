@@ -201,6 +201,12 @@ containers:
   volumeMounts:
     - mountPath: /config
       name: config
+    {{- range .Values.extraConfigmapMounts }}
+    - name: {{ .name }}
+      mountPath: {{ .mountPath }}
+      subPath: {{ .subPath | default "" }}
+      readOnly: {{ .readOnly }}
+    {{- end }}
   {{- with .Values.configReloader.securityContext }}
   securityContext:
     {{- toYaml . | nindent 4 }}
